@@ -1,6 +1,8 @@
 
 import re
 import time
+import sys
+import json
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -70,3 +72,20 @@ def scrape_leetcode_stats(username,leetcode_Url = None):
         },
         "recent_submission": recent_submission
     }
+
+# Command line interface for Node.js
+if __name__ == "__main__":
+    try:
+        if len(sys.argv) < 2:
+            print(json.dumps({"error": "Username is required"}))
+            sys.exit(1)
+        
+        username = sys.argv[1]
+        url = sys.argv[2] if len(sys.argv) > 2 else None
+        
+        result = scrape_leetcode_stats(username, url)
+        print(json.dumps(result))
+        
+    except Exception as e:
+        print(json.dumps({"error": str(e)}))
+        sys.exit(1)

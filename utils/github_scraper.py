@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import sys
+import json
 
 USER_AGENT = "MyScraperBot/1.0"
 
@@ -18,3 +20,20 @@ def scrape_github_user(username, github_Url = None):
         "repos":repos,
         "total_repos":len(repos)
     }
+
+# Command line interface for Node.js
+if __name__ == "__main__":
+    try:
+        if len(sys.argv) < 2:
+            print(json.dumps({"error": "Username is required"}))
+            sys.exit(1)
+        
+        username = sys.argv[1]
+        url = sys.argv[2] if len(sys.argv) > 2 else None
+        
+        result = scrape_github_user(username, url)
+        print(json.dumps(result))
+        
+    except Exception as e:
+        print(json.dumps({"error": str(e)}))
+        sys.exit(1)

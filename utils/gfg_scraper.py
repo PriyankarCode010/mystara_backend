@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+import sys
+import json
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 
@@ -29,3 +31,19 @@ def scrape_gfg_profile(username):
     data["total_solved"] = total_solved.get_text(strip=True) if rank_tag else None
 
     return data
+
+# Command line interface for Node.js
+if __name__ == "__main__":
+    try:
+        if len(sys.argv) < 2:
+            print(json.dumps({"error": "Username is required"}))
+            sys.exit(1)
+        
+        username = sys.argv[1]
+        
+        result = scrape_gfg_profile(username)
+        print(json.dumps(result))
+        
+    except Exception as e:
+        print(json.dumps({"error": str(e)}))
+        sys.exit(1)
